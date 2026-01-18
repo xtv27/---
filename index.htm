@@ -131,118 +131,6 @@
             50% { opacity: 0.5; }
         }
         
-        .offline {
-            background: #57606f;
-        }
-        
-        .admin-panel {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 25px;
-            margin-top: 30px;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        .admin-panel h3 {
-            color: white;
-            margin-bottom: 20px;
-            text-align: center;
-            font-size: 1.5em;
-        }
-        
-        .stream-controls {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        
-        .video-selector {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 15px;
-            margin: 20px 0;
-        }
-        
-        .video-option {
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 10px;
-            padding: 15px;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-align: center;
-        }
-        
-        .video-option:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: translateY(-3px);
-        }
-        
-        .video-option.active {
-            background: rgba(255, 255, 255, 0.3);
-            border-color: white;
-        }
-        
-        .video-option .video-icon {
-            font-size: 2em;
-            margin-bottom: 10px;
-        }
-        
-        .btn {
-            padding: 14px 30px;
-            border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        .btn-primary {
-            background: white;
-            color: #1e3c72;
-        }
-        
-        .btn-primary:hover {
-            background: #f1f2f6;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-        
-        .btn-login {
-            background: transparent;
-            border: 2px solid white;
-            color: white;
-        }
-        
-        .btn-login:hover {
-            background: white;
-            color: #1e3c72;
-        }
-        
-        .btn-danger {
-            background: #ff4757;
-            color: white;
-        }
-        
-        .btn-danger:hover {
-            background: #ff3742;
-        }
-        
-        .btn-logout {
-            background: transparent;
-            border: 2px solid #ff4757;
-            color: #ff4757;
-            margin-top: 10px;
-        }
-        
-        .btn-logout:hover {
-            background: #ff4757;
-            color: white;
-        }
-        
         .info-box {
             background: rgba(255, 255, 255, 0.15);
             border-radius: 15px;
@@ -274,28 +162,6 @@
             color: white;
         }
         
-        .login-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .login-form {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            padding: 40px;
-            border-radius: 20px;
-            width: 90%;
-            max-width: 400px;
-            border: 3px solid white;
-        }
-        
         .footer {
             text-align: center;
             padding: 25px;
@@ -305,20 +171,11 @@
             font-size: 0.9em;
         }
         
-        .broadcast-info {
+        .video-info {
             background: rgba(0, 0, 0, 0.3);
             padding: 15px;
             border-radius: 10px;
             margin-top: 15px;
-        }
-        
-        .admin-info {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 20px;
-            text-align: center;
-            border: 2px solid rgba(255, 255, 255, 0.3);
         }
         
         @media (max-width: 768px) {
@@ -330,7 +187,7 @@
                 font-size: 1.8em;
             }
             
-            .player-section, .admin-panel {
+            .player-section {
                 padding: 20px;
             }
             
@@ -338,10 +195,6 @@
                 flex-direction: column;
                 gap: 15px;
                 text-align: center;
-            }
-            
-            .video-selector {
-                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             }
         }
     </style>
@@ -364,16 +217,16 @@
         <section class="player-section">
             <h2 style="text-align: center; margin-bottom: 20px;">Прямой эфир ХТВ</h2>
             <div class="video-container">
-                <video id="streamPlayer" controls>
+                <video id="streamPlayer" autoplay loop muted playsinline>
                     Ваш браузер не поддерживает видео.
                 </video>
             </div>
             
             <div class="status">
-                <div class="live-badge offline" id="statusBadge">● ВЕЩАНИЕ ЗАВЕРШЕНО</div>
-                <div class="broadcast-info">
-                    <div>Сейчас в эфире: <span id="currentVideo">Нет трансляции</span></div>
-                    <div>Статус: <span id="broadcastStatus">Остановлено</span></div>
+                <div class="live-badge">● В ЭФИРЕ</div>
+                <div class="video-info">
+                    <div>Сейчас в эфире: <span id="currentVideo">Хабаровск 24/7</span></div>
+                    <div>Режим: <span id="broadcastStatus">Непрерывное вещание</span></div>
                 </div>
             </div>
         </section>
@@ -383,311 +236,66 @@
             <h3>📺 О Хабаровском Телевидении</h3>
             <ul>
                 <li>Первый независимый телеканал Хабаровска</li>
-                <li>Прямые трансляции городских мероприятий</li>
+                <li>Круглосуточное вещание 24/7</li>
                 <li>Эксклюзивные репортажи и интервью</li>
-                <li>Качественное вещание 24/7</li>
+                <li>Качественное вещание без перерывов</li>
             </ul>
         </section>
-
-        <!-- Админ панель (видна только админам) -->
-        <section class="admin-panel" id="adminPanel" style="display: none;">
-            <h3>🛠️ Панель управления эфиром</h3>
-            
-            <div class="admin-info" id="adminInfo" style="display: none;">
-                Вы вошли как: <strong id="adminName">Администратор</strong>
-                <button class="btn btn-logout" onclick="adminLogout()" style="margin-left: 20px;">
-                    🔓 Выйти
-                </button>
-            </div>
-            
-            <div class="stream-controls">
-                <h4>Выберите передачу для трансляции:</h4>
-                
-                <div class="video-selector" id="videoSelector">
-                    <!-- Видео файлы будут добавлены через JavaScript -->
-                </div>
-                
-                <div style="display: flex; gap: 15px; margin-top: 20px;">
-                    <button class="btn btn-primary" onclick="startBroadcast()">
-                        ▶ Начать трансляцию
-                    </button>
-                    
-                    <button class="btn btn-danger" onclick="stopBroadcast()">
-                        ⏸️ Остановить трансляцию
-                    </button>
-                </div>
-                
-                <div style="margin-top: 20px; padding: 15px; background: rgba(0,0,0,0.3); border-radius: 10px;">
-                    <h4>Информация о трансляции:</h4>
-                    <div>Доступно передач: <span id="videoCount">0</span></div>
-                    <div>Текущая передача: <span id="adminCurrentVideo">Не выбрано</span></div>
-                    <div>Статус эфира: <span id="adminBroadcastStatus">Остановлено</span></div>
-                    <div>Тип контента: <span id="contentType">Локальные видеофайлы</span></div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Кнопка входа для админа -->
-        <div style="text-align: center; margin-top: 30px;" id="loginSection">
-            <button class="btn btn-login" onclick="showLogin()">
-                🔐 Вход для администратора
-            </button>
-            <div style="margin-top: 10px; font-size: 0.9em; opacity: 0.8;">
-                Для управления эфиром
-            </div>
-        </div>
-    </div>
-
-    <!-- Модальное окно входа -->
-    <div class="login-modal" id="loginModal">
-        <div class="login-form">
-            <h2 style="text-align: center; margin-bottom: 30px;">Вход администратора ХТВ</h2>
-            <div class="input-group">
-                <label>Логин:</label>
-                <input type="text" id="adminLogin" placeholder="Введите логин">
-            </div>
-            <div class="input-group">
-                <label>Пароль:</label>
-                <input type="password" id="adminPassword" placeholder="Введите пароль">
-            </div>
-            <button class="btn btn-primary" style="width: 100%; margin-top: 20px;" 
-                    onclick="adminLogin()">
-                Войти в панель управления
-            </button>
-            <button class="btn btn-login" style="width: 100%; margin-top: 10px;" 
-                    onclick="hideLogin()">
-                Отмена
-            </button>
-        </div>
     </div>
 
     <!-- Подвал -->
     <footer class="footer">
         <p>© 2026 ХТВ - Хабаровское Телевидение. Все права защищены.</p>
         <p>Хабаровск, ул. Ленина, 15. Телефон: (4212) 123-456</p>
-        <p>Эфирное вещание: 25 ТВК • Кабельное: 7 канал • Онлайн: htv.khv.ru</p>
+        <p>Эфирное вещание: 25 ТВК • Кабельное: 7 канал</p>
     </footer>
 
     <script>
-        // Глобальные переменные
-        let isAdmin = false;
-        let isBroadcasting = false;
-        let currentVideo = '';
-        let videoFiles = [];
-        
-        // Список видео файлов из папки video/
-        const localVideos = [
-            { 
-                name: 'Работает', 
-                file: 'video/ivan.mp4',
-                icon: '🌅',
-                category: 'Утренняя программа'
-            },
-            { 
-                name: 'Не работает', 
-                file: 'video/novosti.mp4',
-                icon: '📰',
-                category: 'Новости'
-            },
-            { 
-                name: 'Не работает', 
-                file: 'video/kultura.mp4',
-                icon: '🎭',
-                category: 'Культура'
-            },
-            { 
-                name: 'Не работает', 
-                file: 'video/sport.mp4',
-                icon: '⚽',
-                category: 'Спорт'
-            },
-            { 
-                name: 'Не работает', 
-                file: 'video/vecherniy-habarovsk.mp4',
-                icon: '🌇',
-                category: 'Вечерняя программа'
-            }
-        ];
-        
-        // Инициализация при загрузке
+        // Автоматически запускаем видео при загрузке
         window.onload = function() {
-            loadVideoFiles();
-            checkAdminStatus();
-        };
-        
-        // Загружаем список видео
-        function loadVideoFiles() {
-            videoFiles = localVideos;
+            const player = document.getElementById('streamPlayer');
             
-            const selector = document.getElementById('videoSelector');
-            selector.innerHTML = '';
+            // Пытаемся загрузить видео из папки video
+            const videoSources = [
+                'video/1.mp4',
+                'video/video1.mp4', 
+                'video/video.mp4',
+                'video/htv.mp4'
+            ];
             
-            videoFiles.forEach((video, index) => {
-                const div = document.createElement('div');
-                div.className = 'video-option';
-                div.onclick = () => selectVideo(index);
-                div.innerHTML = `
-                    <div class="video-icon">${video.icon}</div>
-                    <div><strong>${video.name}</strong></div>
-                    <div style="font-size: 0.8em; opacity: 0.8;">${video.category}</div>
-                `;
-                selector.appendChild(div);
-            });
+            // Проверяем какое видео доступно
+            let videoLoaded = false;
             
-            document.getElementById('videoCount').textContent = videoFiles.length;
-        }
-        
-        // Выбрать видео
-        function selectVideo(index) {
-            const options = document.querySelectorAll('.video-option');
-            options.forEach(opt => opt.classList.remove('active'));
-            options[index].classList.add('active');
-            
-            currentVideo = videoFiles[index].file;
-            document.getElementById('adminCurrentVideo').textContent = videoFiles[index].name;
-            document.getElementById('currentVideo').textContent = videoFiles[index].name;
-            
-            // Предпросмотр для админа
-            if (isAdmin) {
-                const player = document.getElementById('streamPlayer');
-                player.src = currentVideo;
+            for (let source of videoSources) {
+                player.src = source;
                 player.load();
-            }
-        }
-        
-        // Начать трансляцию
-        function startBroadcast() {
-            if (!currentVideo) {
-                alert('Выберите передачу для трансляции!');
-                return;
-            }
-            
-            const player = document.getElementById('streamPlayer');
-            player.src = currentVideo;
-            player.play();
-            
-            isBroadcasting = true;
-            
-            // Обновляем UI
-            document.getElementById('statusBadge').className = 'live-badge';
-            document.getElementById('statusBadge').textContent = '● В ЭФИРЕ';
-            document.getElementById('broadcastStatus').textContent = 'Идет трансляция';
-            document.getElementById('adminBroadcastStatus').textContent = 'Идет трансляция';
-            
-            alert('Трансляция начата! Зрители теперь видят выбранную передачу.');
-        }
-        
-        // Остановить трансляцию
-        function stopBroadcast() {
-            const player = document.getElementById('streamPlayer');
-            player.pause();
-            player.currentTime = 0;
-            
-            isBroadcasting = false;
-            
-            // Обновляем UI
-            document.getElementById('statusBadge').className = 'live-badge offline';
-            document.getElementById('statusBadge').textContent = '● ВЕЩАНИЕ ЗАВЕРШЕНО';
-            document.getElementById('broadcastStatus').textContent = 'Остановлено';
-            document.getElementById('adminBroadcastStatus').textContent = 'Остановлено';
-            
-            alert('Трансляция остановлена.');
-        }
-        
-        // Показать окно входа
-        function showLogin() {
-            document.getElementById('loginModal').style.display = 'flex';
-        }
-        
-        // Скрыть окно входа
-        function hideLogin() {
-            document.getElementById('loginModal').style.display = 'none';
-            document.getElementById('adminLogin').value = '';
-            document.getElementById('adminPassword').value = '';
-        }
-        
-        // Вход администратора
-        function adminLogin() {
-            const login = document.getElementById('adminLogin').value;
-            const password = document.getElementById('adminPassword').value;
-            
-            // Проверка логина и пароля
-            if (login === 'admin' && password === 'htv2026icon2026') {
-                isAdmin = true;
-                document.getElementById('adminPanel').style.display = 'block';
-                document.getElementById('loginSection').style.display = 'none';
-                document.getElementById('adminInfo').style.display = 'block';
-                document.getElementById('adminName').textContent = login;
-                hideLogin();
                 
-                // Сохраняем в localStorage
-                localStorage.setItem('htv_admin', 'true');
-                localStorage.setItem('htv_admin_login', login);
-                
-                alert('Добро пожаловать в панель управления ХТВ!');
-                
-                // Выбираем первое видео по умолчанию
-                if (videoFiles.length > 0) {
-                    selectVideo(0);
-                }
-            } else {
-                alert('Неверный логин или пароль!');
-            }
-        }
-        
-        // Выход администратора
-        function adminLogout() {
-            isAdmin = false;
-            document.getElementById('adminPanel').style.display = 'none';
-            document.getElementById('loginSection').style.display = 'block';
-            document.getElementById('adminInfo').style.display = 'none';
-            
-            // Очищаем localStorage
-            localStorage.removeItem('htv_admin');
-            localStorage.removeItem('htv_admin_login');
-            
-            // Останавливаем трансляцию при выходе
-            if (isBroadcasting) {
-                stopBroadcast();
-            }
-            
-            alert('Вы вышли из панели управления.');
-        }
-        
-        // Проверить статус админа
-        function checkAdminStatus() {
-            if (localStorage.getItem('htv_admin') === 'true') {
-                const login = localStorage.getItem('htv_admin_login');
-                if (login === 'admin') {
-                    isAdmin = true;
-                    document.getElementById('adminPanel').style.display = 'block';
-                    document.getElementById('loginSection').style.display = 'none';
-                    document.getElementById('adminInfo').style.display = 'block';
-                    document.getElementById('adminName').textContent = login;
-                    
-                    // Выбираем первое видео по умолчанию
-                    if (videoFiles.length > 0) {
-                        selectVideo(0);
+                player.oncanplay = function() {
+                    if (!videoLoaded) {
+                        videoLoaded = true;
+                        player.play();
+                        console.log('Видео загружено:', source);
                     }
-                }
+                };
+                
+                player.onerror = function() {
+                    console.log('Не удалось загрузить:', source);
+                };
+                
+                if (videoLoaded) break;
             }
-        }
-        
-        // Обработчик завершения видео
-        document.getElementById('streamPlayer').addEventListener('ended', function() {
-            // Автоматически повторяем видео
-            if (isBroadcasting) {
+            
+            // Если ни одно видео не загрузилось
+            player.onerror = function() {
+                console.log('Все видео недоступны');
+                document.getElementById('broadcastStatus').textContent = 'Технические работы';
+            };
+            
+            // Автоповтор при завершении
+            player.addEventListener('ended', function() {
                 this.currentTime = 0;
                 this.play();
-            }
-        });
-        
-        // Закрытие модального окна по клику вне его
-        window.onclick = function(event) {
-            const modal = document.getElementById('loginModal');
-            if (event.target === modal) {
-                hideLogin();
-            }
+            });
         };
     </script>
 </body>
