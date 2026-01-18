@@ -274,18 +274,6 @@
             color: white;
         }
         
-        .viewer-count {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.1em;
-        }
-        
-        .viewer-count::before {
-            content: '👁️';
-            font-size: 1.3em;
-        }
-        
         .login-modal {
             display: none;
             position: fixed;
@@ -317,27 +305,11 @@
             font-size: 0.9em;
         }
         
-        .video-info {
+        .broadcast-info {
             background: rgba(0, 0, 0, 0.3);
             padding: 15px;
             border-radius: 10px;
             margin-top: 15px;
-        }
-        
-        .progress-bar {
-            width: 100%;
-            height: 5px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 3px;
-            margin-top: 10px;
-            overflow: hidden;
-        }
-        
-        .progress {
-            height: 100%;
-            background: white;
-            width: 0%;
-            transition: width 0.3s;
         }
         
         .admin-info {
@@ -399,15 +371,9 @@
             
             <div class="status">
                 <div class="live-badge offline" id="statusBadge">● ВЕЩАНИЕ ЗАВЕРШЕНО</div>
-                <div class="viewer-count">Зрителей: <span id="viewerCount">0</span></div>
-            </div>
-            
-            <div class="video-info">
-                <div>Сейчас в эфире: <span id="currentVideo">Нет трансляции</span></div>
-                <div>Длительность: <span id="videoDuration">--:--</span></div>
-                <div>Прогресс: <span id="videoProgress">0%</span></div>
-                <div class="progress-bar">
-                    <div class="progress" id="progressBar"></div>
+                <div class="broadcast-info">
+                    <div>Сейчас в эфире: <span id="currentVideo">Нет трансляции</span></div>
+                    <div>Статус: <span id="broadcastStatus">Остановлено</span></div>
                 </div>
             </div>
         </section>
@@ -435,7 +401,7 @@
             </div>
             
             <div class="stream-controls">
-                <h4>Выберите видео для трансляции:</h4>
+                <h4>Выберите передачу для трансляции:</h4>
                 
                 <div class="video-selector" id="videoSelector">
                     <!-- Видео файлы будут добавлены через JavaScript -->
@@ -447,20 +413,16 @@
                     </button>
                     
                     <button class="btn btn-danger" onclick="stopBroadcast()">
-                        ⏹️ Остановить трансляцию
-                    </button>
-                    
-                    <button class="btn btn-primary" onclick="toggleLoop()" id="loopBtn">
-                        🔄 Повтор: ВКЛ
+                        ⏸️ Остановить трансляцию
                     </button>
                 </div>
                 
                 <div style="margin-top: 20px; padding: 15px; background: rgba(0,0,0,0.3); border-radius: 10px;">
-                    <h4>Статистика трансляции:</h4>
-                    <div>Видео в папке: <span id="videoCount">0</span></div>
-                    <div>Текущее видео: <span id="adminCurrentVideo">Не выбрано</span></div>
-                    <div>Статус: <span id="broadcastStatus">Остановлено</span></div>
-                    <div>Время начала: <span id="startTime">--:--</span></div>
+                    <h4>Информация о трансляции:</h4>
+                    <div>Доступно передач: <span id="videoCount">0</span></div>
+                    <div>Текущая передача: <span id="adminCurrentVideo">Не выбрано</span></div>
+                    <div>Статус эфира: <span id="adminBroadcastStatus">Остановлено</span></div>
+                    <div>Тип контента: <span id="contentType">Локальные видеофайлы</span></div>
                 </div>
             </div>
         </section>
@@ -471,7 +433,7 @@
                 🔐 Вход для администратора
             </button>
             <div style="margin-top: 10px; font-size: 0.9em; opacity: 0.8;">
-                Для управления трансляциями
+                Для управления эфиром
             </div>
         </div>
     </div>
@@ -482,17 +444,13 @@
             <h2 style="text-align: center; margin-bottom: 30px;">Вход администратора ХТВ</h2>
             <div class="input-group">
                 <label>Логин:</label>
-                <input type="text" id="adminLogin" placeholder="Введите логин" value="admin">
+                <input type="text" id="adminLogin" placeholder="Введите логин">
             </div>
             <div class="input-group">
                 <label>Пароль:</label>
-                <input type="password" id="adminPassword" placeholder="Введите пароль" value="htv2026icon2026">
+                <input type="password" id="adminPassword" placeholder="Введите пароль">
             </div>
-            <div style="margin: 15px 0; text-align: center; font-size: 0.9em; opacity: 0.8;">
-                Логин: admin<br>
-                Пароль: htv2026icon2026
-            </div>
-            <button class="btn btn-primary" style="width: 100%; margin-top: 10px;" 
+            <button class="btn btn-primary" style="width: 100%; margin-top: 20px;" 
                     onclick="adminLogin()">
                 Войти в панель управления
             </button>
@@ -515,45 +473,51 @@
         let isAdmin = false;
         let isBroadcasting = false;
         let currentVideo = '';
-        let videoLoop = true;
-        let viewerCount = 0;
-        let startTime = null;
         let videoFiles = [];
+        
+        // Список видео файлов из папки video/
+        const localVideos = [
+            { 
+                name: 'Работает', 
+                file: 'video/ivan.mp4',
+                icon: '🌅',
+                category: 'Утренняя программа'
+            },
+            { 
+                name: 'Не работает', 
+                file: 'video/novosti.mp4',
+                icon: '📰',
+                category: 'Новости'
+            },
+            { 
+                name: 'Не работает', 
+                file: 'video/kultura.mp4',
+                icon: '🎭',
+                category: 'Культура'
+            },
+            { 
+                name: 'Не работает', 
+                file: 'video/sport.mp4',
+                icon: '⚽',
+                category: 'Спорт'
+            },
+            { 
+                name: 'Не работает', 
+                file: 'video/vecherniy-habarovsk.mp4',
+                icon: '🌇',
+                category: 'Вечерняя программа'
+            }
+        ];
         
         // Инициализация при загрузке
         window.onload = function() {
             loadVideoFiles();
             checkAdminStatus();
-            updateViewerCount();
-            
-            // Очищаем автоматический вход
-            clearAutoLogin();
-            
-            // Обновляем счетчик зрителей каждые 30 секунд
-            setInterval(updateViewerCount, 30000);
-            
-            // Проверяем прогресс видео каждую секунду
-            setInterval(updateVideoProgress, 1000);
         };
         
-        // Очистить автоматический вход
-        function clearAutoLogin() {
-            // Удаляем сохранённую авторизацию при загрузке
-            localStorage.removeItem('htv_admin');
-            localStorage.removeItem('htv_admin_login');
-            isAdmin = false;
-        }
-        
-        // Загружаем список видео файлов
+        // Загружаем список видео
         function loadVideoFiles() {
-            // Список видео файлов из папки video
-            videoFiles = [
-                { name: 'Работает', file: 'video/ivan.mp4', icon: '🌅' },
-                { name: 'Не работает', file: 'video/novosti.mp4', icon: '📰' },
-                { name: 'Не работает', file: 'video/kultura.mp4', icon: '🎭' },
-                { name: 'Не работает', file: 'video/sport.mp4', icon: '⚽' },
-                { name: 'Не работает', file: 'video/vecherniy-habarovsk.mp4', icon: '🌇' }
-            ];
+            videoFiles = localVideos;
             
             const selector = document.getElementById('videoSelector');
             selector.innerHTML = '';
@@ -565,6 +529,7 @@
                 div.innerHTML = `
                     <div class="video-icon">${video.icon}</div>
                     <div><strong>${video.name}</strong></div>
+                    <div style="font-size: 0.8em; opacity: 0.8;">${video.category}</div>
                 `;
                 selector.appendChild(div);
             });
@@ -580,6 +545,7 @@
             
             currentVideo = videoFiles[index].file;
             document.getElementById('adminCurrentVideo').textContent = videoFiles[index].name;
+            document.getElementById('currentVideo').textContent = videoFiles[index].name;
             
             // Предпросмотр для админа
             if (isAdmin) {
@@ -592,33 +558,23 @@
         // Начать трансляцию
         function startBroadcast() {
             if (!currentVideo) {
-                alert('Выберите видео для трансляции!');
+                alert('Выберите передачу для трансляции!');
                 return;
             }
             
             const player = document.getElementById('streamPlayer');
             player.src = currentVideo;
-            player.loop = videoLoop;
             player.play();
             
             isBroadcasting = true;
-            startTime = new Date();
             
             // Обновляем UI
             document.getElementById('statusBadge').className = 'live-badge';
             document.getElementById('statusBadge').textContent = '● В ЭФИРЕ';
             document.getElementById('broadcastStatus').textContent = 'Идет трансляция';
-            document.getElementById('startTime').textContent = startTime.toLocaleTimeString();
+            document.getElementById('adminBroadcastStatus').textContent = 'Идет трансляция';
             
-            // Показываем текущее видео
-            const videoName = videoFiles.find(v => v.file === currentVideo)?.name || 'Неизвестно';
-            document.getElementById('currentVideo').textContent = videoName;
-            
-            // Увеличиваем счетчик зрителей
-            viewerCount = Math.floor(Math.random() * 100) + 50;
-            document.getElementById('viewerCount').textContent = viewerCount;
-            
-            alert('Трансляция начата! Зрители теперь видят выбранное видео.');
+            alert('Трансляция начата! Зрители теперь видят выбранную передачу.');
         }
         
         // Остановить трансляцию
@@ -633,55 +589,9 @@
             document.getElementById('statusBadge').className = 'live-badge offline';
             document.getElementById('statusBadge').textContent = '● ВЕЩАНИЕ ЗАВЕРШЕНО';
             document.getElementById('broadcastStatus').textContent = 'Остановлено';
-            document.getElementById('currentVideo').textContent = 'Нет трансляции';
-            document.getElementById('videoDuration').textContent = '--:--';
-            document.getElementById('videoProgress').textContent = '0%';
-            document.getElementById('progressBar').style.width = '0%';
+            document.getElementById('adminBroadcastStatus').textContent = 'Остановлено';
             
             alert('Трансляция остановлена.');
-        }
-        
-        // Переключить повтор
-        function toggleLoop() {
-            videoLoop = !videoLoop;
-            const player = document.getElementById('streamPlayer');
-            player.loop = videoLoop;
-            
-            const btn = document.getElementById('loopBtn');
-            btn.innerHTML = videoLoop ? '🔄 Повтор: ВКЛ' : '🔁 Повтор: ВЫКЛ';
-            btn.style.background = videoLoop ? '' : '#57606f';
-        }
-        
-        // Обновить прогресс видео
-        function updateVideoProgress() {
-            const player = document.getElementById('streamPlayer');
-            if (player.duration && !isNaN(player.duration)) {
-                const progress = (player.currentTime / player.duration) * 100;
-                document.getElementById('videoProgress').textContent = Math.round(progress) + '%';
-                document.getElementById('progressBar').style.width = progress + '%';
-                
-                // Форматируем время
-                const duration = formatTime(player.duration);
-                const current = formatTime(player.currentTime);
-                document.getElementById('videoDuration').textContent = `${current} / ${duration}`;
-            }
-        }
-        
-        // Форматирование времени
-        function formatTime(seconds) {
-            const mins = Math.floor(seconds / 60);
-            const secs = Math.floor(seconds % 60);
-            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-        }
-        
-        // Обновить счетчик зрителей
-        function updateViewerCount() {
-            if (isBroadcasting) {
-                // Имитация изменения количества зрителей
-                const change = Math.floor(Math.random() * 11) - 5; // от -5 до +5
-                viewerCount = Math.max(10, viewerCount + change);
-                document.getElementById('viewerCount').textContent = viewerCount;
-            }
         }
         
         // Показать окно входа
@@ -765,8 +675,10 @@
         
         // Обработчик завершения видео
         document.getElementById('streamPlayer').addEventListener('ended', function() {
-            if (isBroadcasting && !videoLoop) {
-                stopBroadcast();
+            // Автоматически повторяем видео
+            if (isBroadcasting) {
+                this.currentTime = 0;
+                this.play();
             }
         });
         
@@ -779,5 +691,4 @@
         };
     </script>
 </body>
-
 </html>
