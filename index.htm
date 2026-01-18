@@ -4,88 +4,258 @@
     <meta charset="UTF-8">
     <title>ХТВ - Хабаровское Телевидение</title>
     <style>
-        body {
+        * {
             margin: 0;
-            background: #1e3c72;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(rgba(30, 60, 114, 0.9), rgba(10, 35, 81, 0.95)), 
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%231e3c72"/><path d="M0,50 L100,50 M50,0 L50,100" stroke="%232a5298" stroke-width="1"/></svg>');
+            background-size: 100px 100px;
+            min-height: 100vh;
             color: white;
-            font-family: Arial;
+            font-family: 'Arial', sans-serif;
+            position: relative;
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
             text-align: center;
         }
-        .header {
-            background: #0a2351;
-            padding: 20px;
-            border-bottom: 3px solid white;
+        
+        .logo {
+            margin-bottom: 40px;
+            text-align: center;
         }
-        .video-container {
-            max-width: 900px;
-            margin: 30px auto;
-            background: black;
-            border-radius: 10px;
-            overflow: hidden;
-            border: 3px solid white;
+        
+        .logo-icon {
+            width: 80px;
+            height: 80px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: bold;
+            color: #1e3c72;
+            margin: 0 auto 15px;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
         }
-        video {
-            width: 100%;
-            display: block;
+        
+        h1 {
+            font-size: 2.8em;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+        
+        .subtitle {
+            font-size: 1.3em;
+            opacity: 0.9;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .maintenance-message {
+            background: rgba(0, 0, 0, 0.7);
+            border: 3px solid #ff4757;
+            border-radius: 20px;
+            padding: 40px 60px;
+            margin: 30px 0;
+            box-shadow: 0 0 40px rgba(255, 71, 87, 0.4);
+            max-width: 800px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .maintenance-text {
+            font-size: 4em;
+            font-weight: bold;
+            color: #ff4757;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            animation: blink 1.5s infinite, pulse 2s infinite;
+            text-shadow: 0 0 20px rgba(255, 71, 87, 0.8);
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        @keyframes pulse {
+            0% { text-shadow: 0 0 20px rgba(255, 71, 87, 0.8); }
+            50% { text-shadow: 0 0 40px rgba(255, 71, 87, 1); }
+            100% { text-shadow: 0 0 20px rgba(255, 71, 87, 0.8); }
+        }
+        
+        .info-text {
+            font-size: 1.4em;
+            margin-top: 25px;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.6;
+            max-width: 600px;
+        }
+        
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 15px;
+            border-top: 2px solid rgba(255, 255, 255, 0.2);
+            font-size: 0.9em;
+            color: rgba(255, 255, 255, 0.7);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .tech-info {
+            font-size: 0.85em;
+            opacity: 0.8;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .tech-icon {
+            color: #ff4757;
+            animation: blink 2s infinite;
+        }
+        
+        .contact-info {
+            text-align: right;
+            font-size: 0.9em;
+        }
+        
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+            font-size: 1.1em;
+        }
+        
+        .dot {
+            width: 12px;
+            height: 12px;
+            background: #ff4757;
+            border-radius: 50%;
+            animation: blink 1s infinite;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+            
+            .maintenance-text {
+                font-size: 2.5em;
+                padding: 20px;
+            }
+            
+            .maintenance-message {
+                padding: 25px 30px;
+            }
+            
+            .info-text {
+                font-size: 1.1em;
+            }
+            
+            .footer {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>ХТВ - Хабаровское Телевидение</h1>
-        <p>Круглосуточное вещание</p>
+    <div class="container">
+        <div class="logo">
+            <div class="logo-icon">ХТВ</div>
+            <h1>ХТВ - Хабаровское Телевидение</h1>
+            <div class="subtitle">Телеканал города Хабаровска</div>
+        </div>
+        
+        <div class="maintenance-message">
+            <div class="maintenance-text">Технические работы</div>
+            
+            <div class="status-indicator">
+                <div class="dot"></div>
+                <span>Идёт обновление технического оборудования</span>
+            </div>
+            
+            <div class="info-text">
+                Вещание временно приостановлено.<br>
+                Мы работаем над улучшением качества трансляции.<br>
+                Приносим извинения за временные неудобства.
+            </div>
+        </div>
+        
+        <div class="info-text" style="margin-top: 40px; font-size: 1.2em;">
+            Ожидаемое время восстановления: <strong>скоро</strong><br>
+            Следите за обновлениями на нашем сайте
+        </div>
     </div>
     
-    <div class="video-container">
-        <video id="tvPlayer" controls autoplay loop muted playsinline>
-            <source src="video/1.mp4" type="video/mp4">
-            Ваш браузер не поддерживает видео.
-        </video>
-    </div>
-    
-    <div style="padding: 20px;">
-        <h2>📺 Хабаровск 24/7</h2>
-        <p>Статус: <span id="status">Загрузка...</span></p>
-    </div>
+    <footer class="footer">
+        <div class="tech-info">
+            <span class="tech-icon">⚙️</span>
+            <span>ТЕХ.РАБОТЫ • Обновление технической инфраструктуры</span>
+        </div>
+        
+        <div class="contact-info">
+            <div>© 2026 ХТВ - Хабаровское Телевидение</div>
+            <div>Хабаровск, ул. Ленина, 15 • (4212) 123-456</div>
+        </div>
+    </footer>
 
     <script>
-        const player = document.getElementById('tvPlayer');
-        const status = document.getElementById('status');
+        // Добавляем немного интерактивности
+        const maintenanceText = document.querySelector('.maintenance-text');
         
-        player.onplaying = function() {
-            status.textContent = "В ЭФИРЕ ●";
-            status.style.color = "#ff4757";
-            console.log("Видео запущено!");
-        };
+        // Меняем оттенки красного для анимации
+        setInterval(() => {
+            const hue = Math.floor(Math.random() * 10) + 345; // 345-355 оттенки красного
+            maintenanceText.style.color = `hsl(${hue}, 100%, 65%)`;
+        }, 2000);
         
-        player.onerror = function() {
-            status.textContent = "ОШИБКА: видео не найдено";
-            status.style.color = "red";
-            console.error("Ошибка загрузки видео");
+        // Показываем текущее время в подвале
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('ru-RU');
+            const dateString = now.toLocaleDateString('ru-RU');
             
-            // Показываем подробности ошибки
-            if (player.error) {
-                console.error("Код ошибки:", player.error.code);
-                console.error("Сообщение:", player.error.message);
+            const timeElement = document.querySelector('.tech-info');
+            if (timeElement) {
+                timeElement.innerHTML = `
+                    <span class="tech-icon">⚙️</span>
+                    <span>ТЕХ.РАБОТЫ • ${dateString} • ${timeString}</span>
+                `;
             }
-        };
+        }
         
-        player.onloadeddata = function() {
-            console.log("Видео загружено, размер:", player.videoWidth + "x" + player.videoHeight);
-        };
+        // Обновляем время каждую секунду
+        setInterval(updateTime, 1000);
+        updateTime();
         
-        // Проверяем доступность файла
-        fetch('video/1.mp4')
-            .then(response => {
-                console.log("Файл существует, статус:", response.status);
-                if (!response.ok) {
-                    status.textContent = "Файл не найден: video/1.mp4";
-                }
-            })
-            .catch(error => {
-                console.error("Файл не доступен:", error);
-                status.textContent = "Ошибка доступа к видеофайлу";
-            });
+        // Добавляем эффект мерцания для всего блока
+        const maintenanceBlock = document.querySelector('.maintenance-message');
+        setInterval(() => {
+            maintenanceBlock.style.boxShadow = `
+                0 0 ${30 + Math.random() * 20}px 
+                rgba(255, 71, 87, ${0.3 + Math.random() * 0.3})
+            `;
+        }, 500);
     </script>
 </body>
 </html>
