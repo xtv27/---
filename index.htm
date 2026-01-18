@@ -2,301 +2,90 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ХТВ - Хабаровское Телевидение</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Arial', sans-serif;
-        }
-        
         body {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            margin: 0;
+            background: #1e3c72;
             color: white;
-            min-height: 100vh;
-        }
-        
-        .header {
-            background: rgba(0, 40, 85, 0.95);
-            padding: 20px;
+            font-family: Arial;
             text-align: center;
-            border-bottom: 4px solid white;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         }
-        
-        .logo {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 20px;
-            margin-bottom: 15px;
+        .header {
+            background: #0a2351;
+            padding: 20px;
+            border-bottom: 3px solid white;
         }
-        
-        .logo-icon {
-            width: 60px;
-            height: 60px;
-            background: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            font-weight: bold;
-            color: #1e3c72;
-        }
-        
-        h1 {
-            font-size: 2.5em;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-        }
-        
-        .subtitle {
-            font-size: 1.2em;
-            opacity: 0.9;
-            margin-top: 5px;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 30px 20px;
-        }
-        
-        .player-section {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 30px;
-            margin-bottom: 30px;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-        }
-        
         .video-container {
-            position: relative;
-            width: 100%;
-            padding-bottom: 56.25%; /* 16:9 */
-            background: rgba(0, 0, 0, 0.7);
-            border-radius: 15px;
+            max-width: 900px;
+            margin: 30px auto;
+            background: black;
+            border-radius: 10px;
             overflow: hidden;
             border: 3px solid white;
         }
-        
-        .video-container video {
-            position: absolute;
-            top: 0;
-            left: 0;
+        video {
             width: 100%;
-            height: 100%;
-            object-fit: contain;
-            background: black;
-        }
-        
-        .status {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 20px;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 10px;
-        }
-        
-        .live-badge {
-            background: #ff4757;
-            color: white;
-            padding: 8px 20px;
-            border-radius: 25px;
-            font-weight: bold;
-            animation: pulse 2s infinite;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .live-badge::before {
-            content: '●';
-            animation: blink 1s infinite;
-        }
-        
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(255, 71, 87, 0.7); }
-            70% { box-shadow: 0 0 0 10px rgba(255, 71, 87, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(255, 71, 87, 0); }
-        }
-        
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-        
-        .info-box {
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 15px;
-            padding: 25px;
-            margin-top: 30px;
-            border-left: 5px solid white;
-        }
-        
-        .info-box h3 {
-            margin-bottom: 15px;
-            color: white;
-        }
-        
-        .info-box ul {
-            list-style: none;
-            padding-left: 20px;
-        }
-        
-        .info-box li {
-            margin-bottom: 12px;
-            padding-left: 10px;
-            position: relative;
-        }
-        
-        .info-box li::before {
-            content: '▶';
-            position: absolute;
-            left: -15px;
-            color: white;
-        }
-        
-        .footer {
-            text-align: center;
-            padding: 25px;
-            margin-top: 40px;
-            border-top: 2px solid rgba(255, 255, 255, 0.2);
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 0.9em;
-        }
-        
-        .video-info {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 15px;
-        }
-        
-        @media (max-width: 768px) {
-            .container {
-                padding: 15px;
-            }
-            
-            h1 {
-                font-size: 1.8em;
-            }
-            
-            .player-section {
-                padding: 20px;
-            }
-            
-            .status {
-                flex-direction: column;
-                gap: 15px;
-                text-align: center;
-            }
+            display: block;
         }
     </style>
 </head>
 <body>
-    <!-- Шапка -->
-    <header class="header">
-        <div class="logo">
-            <div class="logo-icon">ХТВ</div>
-            <div>
-                <h1>ХТВ - Хабаровское Телевидение</h1>
-                <div class="subtitle">Телеканал города Хабаровска - Прямой эфир</div>
-            </div>
-        </div>
-    </header>
-
-    <!-- Основной контент -->
-    <div class="container">
-        <!-- Плеер -->
-        <section class="player-section">
-            <h2 style="text-align: center; margin-bottom: 20px;">Прямой эфир ХТВ</h2>
-            <div class="video-container">
-                <video id="streamPlayer" autoplay loop muted playsinline>
-                    Ваш браузер не поддерживает видео.
-                </video>
-            </div>
-            
-            <div class="status">
-                <div class="live-badge">● В ЭФИРЕ</div>
-                <div class="video-info">
-                    <div>Сейчас в эфире: <span id="currentVideo">Хабаровск 24/7</span></div>
-                    <div>Режим: <span id="broadcastStatus">Непрерывное вещание</span></div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Информация о ХТВ -->
-        <section class="info-box">
-            <h3>📺 О Хабаровском Телевидении</h3>
-            <ul>
-                <li>Первый независимый телеканал Хабаровска</li>
-                <li>Круглосуточное вещание 24/7</li>
-                <li>Эксклюзивные репортажи и интервью</li>
-                <li>Качественное вещание без перерывов</li>
-            </ul>
-        </section>
+    <div class="header">
+        <h1>ХТВ - Хабаровское Телевидение</h1>
+        <p>Круглосуточное вещание</p>
+    </div>
+    
+    <div class="video-container">
+        <video id="tvPlayer" controls autoplay loop muted playsinline>
+            <source src="video/1.mp4" type="video/mp4">
+            Ваш браузер не поддерживает видео.
+        </video>
+    </div>
+    
+    <div style="padding: 20px;">
+        <h2>📺 Хабаровск 24/7</h2>
+        <p>Статус: <span id="status">Загрузка...</span></p>
     </div>
 
-    <!-- Подвал -->
-    <footer class="footer">
-        <p>© 2026 ХТВ - Хабаровское Телевидение. Все права защищены.</p>
-        <p>Хабаровск, ул. Ленина, 15. Телефон: (4212) 123-456</p>
-        <p>Эфирное вещание: 25 ТВК • Кабельное: 7 канал</p>
-    </footer>
-
     <script>
-        // Автоматически запускаем видео при загрузке
-        window.onload = function() {
-            const player = document.getElementById('streamPlayer');
-            
-            // Пытаемся загрузить видео из папки video
-            const videoSources = [
-                'video/1.mp4',
-                'video/video1.mp4', 
-                'video/video.mp4',
-                'video/htv.mp4'
-            ];
-            
-            // Проверяем какое видео доступно
-            let videoLoaded = false;
-            
-            for (let source of videoSources) {
-                player.src = source;
-                player.load();
-                
-                player.oncanplay = function() {
-                    if (!videoLoaded) {
-                        videoLoaded = true;
-                        player.play();
-                        console.log('Видео загружено:', source);
-                    }
-                };
-                
-                player.onerror = function() {
-                    console.log('Не удалось загрузить:', source);
-                };
-                
-                if (videoLoaded) break;
-            }
-            
-            // Если ни одно видео не загрузилось
-            player.onerror = function() {
-                console.log('Все видео недоступны');
-                document.getElementById('broadcastStatus').textContent = 'Технические работы';
-            };
-            
-            // Автоповтор при завершении
-            player.addEventListener('ended', function() {
-                this.currentTime = 0;
-                this.play();
-            });
+        const player = document.getElementById('tvPlayer');
+        const status = document.getElementById('status');
+        
+        player.onplaying = function() {
+            status.textContent = "В ЭФИРЕ ●";
+            status.style.color = "#ff4757";
+            console.log("Видео запущено!");
         };
+        
+        player.onerror = function() {
+            status.textContent = "ОШИБКА: видео не найдено";
+            status.style.color = "red";
+            console.error("Ошибка загрузки видео");
+            
+            // Показываем подробности ошибки
+            if (player.error) {
+                console.error("Код ошибки:", player.error.code);
+                console.error("Сообщение:", player.error.message);
+            }
+        };
+        
+        player.onloadeddata = function() {
+            console.log("Видео загружено, размер:", player.videoWidth + "x" + player.videoHeight);
+        };
+        
+        // Проверяем доступность файла
+        fetch('video/1.mp4')
+            .then(response => {
+                console.log("Файл существует, статус:", response.status);
+                if (!response.ok) {
+                    status.textContent = "Файл не найден: video/1.mp4";
+                }
+            })
+            .catch(error => {
+                console.error("Файл не доступен:", error);
+                status.textContent = "Ошибка доступа к видеофайлу";
+            });
     </script>
 </body>
 </html>
